@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Coffey Labs
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Package docker drives the docker CLI. The CLI rather than the Engine API,
 // because compose is the thing being driven and the CLI is how it ships: the

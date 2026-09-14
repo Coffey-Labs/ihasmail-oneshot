@@ -1,7 +1,7 @@
 # ihasmail-oneshot
 
 [![Latest release](https://img.shields.io/github/v/release/Coffey-Labs/ihasmail-oneshot?sort=date)](https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest)
-[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
+[![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
 
 **One command that turns a Linux Docker host into a working mail server with
 webmail.** It deploys a fresh [Stalwart](https://stalw.art) mail server and a
@@ -869,4 +869,12 @@ public issue.
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE).
+AGPL-3.0-or-later, the same as ihasmail. See [LICENSE](LICENSE).
+
+Running the tool to deploy your own mail host places no obligations on you. The
+licence matters if you modify the tool and offer it to others, including as a
+hosted service that deploys on their behalf: then your modified source must be
+available to them.
+
+`v2026.9.13`, the first release, was published under GPL-3.0-or-later and
+stays under it for anyone who has it. Every later release is AGPL-3.0-or-later.
