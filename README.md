@@ -183,7 +183,7 @@ same bytes from the same commit.
 
 ### From source
 
-With Go 1.26 or newer:
+With Go 1.26.8 or newer:
 
 ```bash
 git clone https://github.com/Coffey-Labs/ihasmail-oneshot.git

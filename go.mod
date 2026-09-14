@@ -1,3 +1,3 @@
 module github.com/Coffey-Labs/ihasmail-oneshot
 
-go 1.26.5
+go 1.26.8
