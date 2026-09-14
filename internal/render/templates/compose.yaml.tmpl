@@ -1,0 +1,94 @@
+# Written by ihasmail-oneshot {{.Version}} for {{.Plan.Domain}}.
+#
+# This is the whole deployment: bring it up again with `docker compose up -d`
+# from this directory. Secrets are in .env next to it, and the Stalwart
+# administrator's password is in credentials.txt -- both readable only by you.
+#
+# Stalwart's plain-HTTP port is reachable only on the private network below and
+# on {{.Plan.StalwartBind}}. ihasmail talks to it over that network, which is
+# why STALWART_URL is http://: the leg never leaves this host.
+name: {{.Plan.Project}}
+
+services:
+  stalwart:
+    image: {{.Plan.StalwartImage}}
+    hostname: {{.Plan.MailHost}}
+    restart: unless-stopped
+    ports:
+      - "{{.Plan.StalwartBind}}:8080"
+{{- range .Plan.PublishedPorts}}{{if and (ne . 80) (ne . 443)}}
+      - "{{.}}:{{.}}"
+{{- end}}{{end}}
+    volumes:
+      - stalwart-etc:/etc/stalwart
+      - stalwart-data:/var/lib/stalwart
+{{- if .CABundle}}
+      # The system roots plus the private ACME CA, so Stalwart can reach it.
+      - ./ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
+{{- end}}
+    networks:
+      stack:
+        ipv4_address: {{.Plan.StalwartIP}}
+
+  ihasmail:
+    image: {{.Plan.IhasmailImage}}
+    restart: unless-stopped
+    depends_on: [stalwart]
+    # Immutable: read-only root, no volume, sessions in memory. A restart signs
+    # everyone out; nothing else is lost, because nothing else is kept here.
+    read_only: true
+    tmpfs: [/tmp]
+    ports:
+      - "{{.Plan.WebmailBind}}:8080"
+    environment:
+      STALWART_URL: http://stalwart:8080
+      APP_SECRET: ${APP_SECRET:?APP_SECRET is missing from .env}
+      IMMUTABLE: "1"
+      SESSION_FILE: ""
+      TRUST_PROXY: "1"
+      IMAGE_PROXY: "1"
+{{- if not .Plan.Local}}
+      # Stalwart pushes changes to this URL instead of holding a connection per
+      # tab. If it cannot reach it, every tab uses the relay; nothing breaks.
+      PUSH_URL: https://{{.Plan.WebmailHost}}
+{{- end}}
+    networks:
+      stack:
+        ipv4_address: {{.Plan.IhasmailIP}}
+{{- if not .Plan.Local}}
+
+  caddy:
+    image: {{.Plan.CaddyImage}}
+    restart: unless-stopped
+    depends_on: [ihasmail, stalwart]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+{{- if .Plan.ACMECARoot}}
+      - ./acme-ca-root.pem:/etc/caddy/acme-ca-root.pem:ro
+{{- end}}
+    networks:
+      stack:
+        ipv4_address: {{.Plan.CaddyIP}}
+{{- end}}
+
+networks:
+  stack:
+    ipam:
+      config:
+        - subnet: {{.Plan.Subnet}}
+
+volumes:
+  stalwart-etc:
+  stalwart-data:
+{{- if not .Plan.Local}}
+  # Certificates and the ACME account. Losing this means asking for every
+  # certificate again, which is how rate limits are reached.
+  caddy-data:
+  caddy-config:
+{{- end}}

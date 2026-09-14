@@ -1,0 +1,17 @@
+# Binaries
+/bin/
+/dist/
+/ihasmail-oneshot
+
+# Test / coverage
+*.out
+*.test
+
+# A deployment directory written by a local run: it holds secrets.
+/ihasmail-*/
+/e2e/work/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
