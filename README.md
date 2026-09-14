@@ -569,7 +569,7 @@ sequenceDiagram
     T->>I: start
     T->>C: start
     C->>CA: certificates for its names (TLS-ALPN-01, port 443)
-    T->>S: allow ihasmail's address; trust Caddy's X-Forwarded-For
+    T->>S: allow ihasmail's address, trust Caddy's X-Forwarded-For
     T->>S: restart to apply
     T->>S: create mailboxes
     T->>I: sign in as the administrator
