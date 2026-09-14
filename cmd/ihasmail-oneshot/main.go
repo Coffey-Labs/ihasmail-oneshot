@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Coffey Labs
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Command ihasmail-oneshot deploys a fresh Stalwart and a fresh ihasmail on
 // one Docker host, linked, in one command.

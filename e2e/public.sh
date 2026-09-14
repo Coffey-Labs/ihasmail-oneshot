@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-FileCopyrightText: 2026 Coffey Labs
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 #
 # End-to-end test of a public deployment, with no internet involved: Pebble
 # stands in for Let's Encrypt and a DNS stub answers every name with this

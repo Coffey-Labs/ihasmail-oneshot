@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Coffey Labs
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Package config turns the command line into a Plan: every name, address and
 // image the deployment uses, validated once, before anything touches Docker.

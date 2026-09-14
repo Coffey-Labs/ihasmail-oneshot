@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Coffey Labs
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Package render writes the deployment directory: compose.yaml, the Caddyfile,
 // and the files holding secrets.
