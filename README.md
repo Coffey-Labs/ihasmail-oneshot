@@ -875,6 +875,3 @@ Running the tool to deploy your own mail host places no obligations on you. The
 licence matters if you modify the tool and offer it to others, including as a
 hosted service that deploys on their behalf: then your modified source must be
 available to them.
-
-`v2026.9.13`, the first release, was published under GPL-3.0-or-later and
-stays under it for anyone who has it. Every later release is AGPL-3.0-or-later.
