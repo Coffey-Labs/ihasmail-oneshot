@@ -60,10 +60,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "unknown command %q\n\n%s", os.Args[1], usageText)
 		os.Exit(2)
 	}
+	if errors.Is(err, flag.ErrHelp) {
+		return // -h printed its usage, which is what was asked for
+	}
 	if err != nil {
-		if !errors.Is(err, flag.ErrHelp) {
-			fmt.Fprintf(os.Stderr, "!!  %v\n", err)
-		}
+		fmt.Fprintf(os.Stderr, "!!  %v\n", err)
 		os.Exit(1)
 	}
 }
