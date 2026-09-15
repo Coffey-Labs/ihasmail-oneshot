@@ -142,7 +142,7 @@ Flags:
 	if err != nil {
 		return err
 	}
-	summarise(plan, res, log)
+	summarize(plan, res, log)
 	return nil
 }
 
@@ -171,7 +171,7 @@ func describe(p config.Plan, log deploy.Log) {
 	}
 }
 
-func summarise(p config.Plan, r *deploy.Result, log deploy.Log) {
+func summarize(p config.Plan, r *deploy.Result, log deploy.Log) {
 	log.Step("done")
 	if p.Local {
 		log.Info("webmail      http://%s", p.WebmailBind)
