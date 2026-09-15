@@ -1,0 +1,41 @@
+# The end-to-end test, every week, against ihasmail's newest release.
+#
+# A deploy with no --ihasmail-image takes whatever ihasmail release is newest
+# when it runs, rather than one this repository pinned. That is only safe if
+# something notices when a new release stops working with the Stalwart and
+# Caddy versions pinned here -- this is that something. It runs on Mondays
+# three hours after ihasmail's weekly release (09:00 UTC), so a release that
+# breaks the one shot shows up the same day, before most people deploy it.
+#
+# e2e/public.sh needs nothing from the internet but images: Pebble stands in for
+# Let's Encrypt and a DNS stub answers every name, and it publishes 25, 80, 443,
+# 465, 993, 995 and 4190 on the runner while it runs.
+name: End-to-end
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: e2e
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - name: Vet and test
+        run: |
+          go vet ./...
+          go test ./...
+      - name: Deploy and check a public stack
+        run: e2e/public.sh

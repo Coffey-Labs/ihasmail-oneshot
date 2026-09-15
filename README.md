@@ -76,11 +76,14 @@ In order, in one run:
    and usable, every port it needs is free, the deployment directory is new or
    empty, no compose project of the same name exists, and the hostnames resolve.
    It reports every problem at once, not the first.
-2. **Shows you the plan and asks** before going ahead. `--yes` skips the
+2. **Finds ihasmail's newest release, shows you the plan and asks** before
+   going ahead, so what you agree to is an exact ihasmail version. `--yes` skips the
    question, and is required when there is no terminal to ask on.
 3. **Writes the deployment directory**: `compose.yaml`, the `Caddyfile`, and
    `.env` holding a freshly generated `APP_SECRET`.
-4. **Pulls the images**, pinned to versions tested together.
+4. **Pulls the images**: Stalwart and Caddy at the versions this release of the
+   tool was tested with, and the ihasmail release it found, written into
+   `compose.yaml` by its dated tag so nothing moves it later.
 5. **Starts Stalwart in bootstrap mode** with a one-time administrator whose
    password exists only in the tool's memory.
 6. **Completes Stalwart's setup** through its API, the same setup its web UI
@@ -204,10 +207,12 @@ ihasmail-oneshot deploy --local --user alice
 ==> a local pair for example.test, in /home/you/ihasmail-example-test
     ihasmail  http://127.0.0.1:8080
     Stalwart  http://127.0.0.1:8081  (admin UI; no mail ports published)
-    images    stalwartlabs/stalwart:v0.16.22, ghcr.io/coffey-labs/ihasmail:2026.9.10-pr328
+    images    stalwartlabs/stalwart:v0.16.22, ihasmail's newest release
     mailboxes alice
 ==> preflight
     docker 29.8.0, compose 5.5.1
+==> finding ihasmail's newest release
+    ihasmail  2026.9.13+pr344, recorded as ghcr.io/coffey-labs/ihasmail:2026.9.13-pr344
 deploy this? [y/N] y
 ==> writing /home/you/ihasmail-example-test
 ==> pulling images
@@ -219,7 +224,7 @@ deploy this? [y/N] y
     ihasmail (172.31.253.11) exempt from Stalwart's auto-ban
     restarting Stalwart to apply them
     mailbox alice@example.test created
-    signed in to ihasmail 2026.9.10+pr328 as admin@example.test: linked
+    signed in to ihasmail 2026.9.13+pr344 as admin@example.test: linked
 ==> done
     webmail      http://127.0.0.1:8080
     Stalwart     http://127.0.0.1:8081/admin
@@ -416,14 +421,17 @@ The containers restart by themselves after a crash or a reboot
 
 ### Upgrading
 
-Change the image tag in `compose.yaml` and apply it:
+Nothing upgrades on its own: every image in `compose.yaml` is a fixed version,
+ihasmail included. To upgrade, change the image tag there and apply it:
 
 ```bash
 docker compose pull && docker compose up -d
 ```
 
 - **ihasmail** is safe to move to any newer release that supports your
-  Stalwart version. Its release notes say which.
+  Stalwart version. Its release notes say which. The newest is on
+  [ihasmail's releases](https://github.com/Coffey-Labs/ihasmail/releases); its
+  image tag is the version with `+` written as `-`, e.g. `2026.9.13-pr344`.
 - **Stalwart**: read its upgrade notes before changing versions. Check that the
   ihasmail version you run supports the new Stalwart release first, since
   ihasmail validates against one Stalwart release at a time. Back up
@@ -477,7 +485,7 @@ ihasmail-oneshot deploy --local [flags]
 | `--dir` | `./PROJECT` | Deployment directory to write. Must be new or empty |
 | `--project` | `ihasmail-DOMAIN` (dots as dashes) | Compose project name, which prefixes containers, network and volumes |
 | `--stalwart-image` | `stalwartlabs/stalwart:v0.16.22` | Stalwart image |
-| `--ihasmail-image` | `ghcr.io/coffey-labs/ihasmail:2026.9.10-pr328` | ihasmail image |
+| `--ihasmail-image` | the newest release | ihasmail image. By default the tool looks up ihasmail's newest release and writes it into `compose.yaml` by its dated tag; name an image to use a particular one |
 | `--caddy-image` | `caddy:2.11.4` | Caddy image |
 | `--webmail-bind` | `127.0.0.1:8080` | Host address for ihasmail's own port, for reaching it without Caddy |
 | `--stalwart-bind` | `127.0.0.1:8081` | Host address for Stalwart's plain-HTTP port. The tool configures Stalwart through it |
@@ -855,9 +863,16 @@ The code:
 ## Versions and releases
 
 Releases are tagged by date, like ihasmail's: `v2026.9.13`, with `.1`, `.2`
-added for another release the same day. Each release pins the Stalwart,
-ihasmail and Caddy images it was tested with as its defaults. A newer release
-of the tool generally means newer tested versions.
+added for another release the same day. Each release pins the Stalwart and
+Caddy images it was tested with as its defaults. A newer release of the tool
+generally means newer tested versions of those.
+
+ihasmail is the exception: a deploy takes its newest release, so a new
+ihasmail needs no new release of this tool. What keeps that safe is the
+end-to-end test, which runs every Monday against ihasmail's newest release, a
+few hours after ihasmail publishes it. Stalwart is never taken this way — an
+upgrade migrates its data with no way back, so its version only changes in a
+release of this tool.
 
 Binaries for `linux/amd64` and `linux/arm64` and a `SHA256SUMS` file are
 attached to every [release](https://github.com/Coffey-Labs/ihasmail-oneshot/releases).

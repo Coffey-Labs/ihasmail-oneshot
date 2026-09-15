@@ -101,7 +101,7 @@ Flags:
 	fs.StringVar(&o.Dir, "dir", "", "deployment directory to write, new or empty (default ./PROJECT)")
 	fs.StringVar(&o.Project, "project", "", "compose project name (default ihasmail-DOMAIN, dots as dashes)")
 	fs.StringVar(&o.StalwartImage, "stalwart-image", config.DefaultStalwartImage, "Stalwart image")
-	fs.StringVar(&o.IhasmailImage, "ihasmail-image", config.DefaultIhasmailImage, "ihasmail image")
+	fs.StringVar(&o.IhasmailImage, "ihasmail-image", config.NewestIhasmail, "ihasmail image; the default is the newest release, written into compose.yaml as its dated tag")
 	fs.StringVar(&o.CaddyImage, "caddy-image", config.DefaultCaddyImage, "Caddy image")
 	fs.StringVar(&o.WebmailBind, "webmail-bind", "127.0.0.1:8080", "host address for ihasmail's own port")
 	fs.StringVar(&o.StalwartBind, "stalwart-bind", "127.0.0.1:8081", "host address for Stalwart's plain-HTTP port (admin UI)")
@@ -131,6 +131,10 @@ Flags:
 	}
 	for _, w := range warnings {
 		log.Warn("%s", w)
+	}
+	// Before the question, so the answer is about the exact ihasmail release.
+	if plan, err = deploy.ResolveIhasmail(ctx, plan, log); err != nil {
+		return err
 	}
 	if !yes {
 		if err := confirm("deploy this?"); err != nil {
@@ -162,7 +166,11 @@ func describe(p config.Plan, log deploy.Log) {
 			log.Info("ACME      Let's Encrypt, contact %s", p.Email)
 		}
 	}
-	log.Info("images    %s, %s", p.StalwartImage, p.IhasmailImage)
+	if p.FollowsNewestIhasmail() {
+		log.Info("images    %s, ihasmail's newest release", p.StalwartImage)
+	} else {
+		log.Info("images    %s, %s", p.StalwartImage, p.IhasmailImage)
+	}
 	if !p.Local {
 		log.Info("          %s", p.CaddyImage)
 	}

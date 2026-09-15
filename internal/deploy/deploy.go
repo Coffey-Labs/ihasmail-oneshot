@@ -84,6 +84,50 @@ func Preflight(ctx context.Context, p config.Plan, log Log) (warnings []string, 
 	return warnings, errors.Join(problems...)
 }
 
+// ResolveIhasmail turns "the newest ihasmail release" into the image that is
+// the newest release right now, so compose.yaml records a version rather than
+// a tag that moves. A plan that names its own image is returned as it is.
+//
+// The dated tag is taken from the version the image itself carries, and used
+// only once the registry confirms that tag is the very same image; otherwise
+// the image is pinned by digest, which is exact but says less to a person
+// reading compose.yaml. Either way a later `docker compose pull` cannot move
+// the deployment onto a release nobody chose.
+func ResolveIhasmail(ctx context.Context, p config.Plan, log Log) (config.Plan, error) {
+	if !p.FollowsNewestIhasmail() {
+		return p, nil
+	}
+	log.Step("finding ihasmail's newest release")
+	if err := docker.Pull(ctx, config.NewestIhasmail); err != nil {
+		return p, fmt.Errorf("could not fetch ihasmail's newest release (%w); name an image with --ihasmail-image to use another", err)
+	}
+	newest, err := docker.ImageID(ctx, config.NewestIhasmail)
+	if err != nil {
+		return p, err
+	}
+	version, err := docker.ImageEnv(ctx, config.NewestIhasmail, "IHASMAIL_VERSION")
+	if err != nil {
+		return p, err
+	}
+	if tag, ok := config.IhasmailTag(version); ok {
+		dated := config.IhasmailRepository + ":" + tag
+		if docker.Pull(ctx, dated) == nil {
+			if id, err := docker.ImageID(ctx, dated); err == nil && id == newest {
+				p.IhasmailImage = dated
+				log.Info("ihasmail  %s, recorded as %s", version, dated)
+				return p, nil
+			}
+		}
+	}
+	digest, err := docker.RepoDigest(ctx, config.NewestIhasmail, config.IhasmailRepository)
+	if err != nil {
+		return p, err
+	}
+	log.Warn("ihasmail's newest release (version %q) has no matching dated tag; recording it by digest", version)
+	p.IhasmailImage = digest
+	return p, nil
+}
+
 // portFree tries to bind an address. A permission error means an unprivileged
 // user asking about a low port, which says nothing about whether Docker can
 // have it, so it is not reported.
