@@ -872,6 +872,6 @@ public issue.
 AGPL-3.0-or-later, the same as ihasmail. See [LICENSE](LICENSE).
 
 Running the tool to deploy your own mail host places no obligations on you. The
-licence matters if you modify the tool and offer it to others, including as a
+license matters if you modify the tool and offer it to others, including as a
 hosted service that deploys on their behalf: then your modified source must be
 available to them.
