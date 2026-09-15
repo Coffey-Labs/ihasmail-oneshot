@@ -2,6 +2,7 @@
 
 [![Latest release](https://img.shields.io/github/v/release/Coffey-Labs/ihasmail-oneshot?sort=date)](https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest)
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
+[![Docs: docs.ihasmail.org](https://img.shields.io/badge/docs-docs.ihasmail.org-0ea5e9)](https://docs.ihasmail.org/install/oneshot/)
 
 **One command that turns a Linux Docker host into a working mail server with
 webmail.** It deploys a fresh [Stalwart](https://stalw.art) mail server and a
@@ -12,6 +13,17 @@ the DNS records to publish.
 ```bash
 ihasmail-oneshot deploy --domain example.com --user alice
 ```
+
+## Documentation
+
+| | |
+| --- | --- |
+| 📘 **[Step-by-step guide](https://docs.ihasmail.org/install/oneshot/)** | **Start here.** On docs.ihasmail.org: DNS, ports, deploying, publishing records, signing in, upgrading and backups |
+| 📋 **[Reference](docs/reference.md)** | Requirements, every command and flag, the deployment directory, upgrading, backing up, removing |
+| ⚙️ **[How it works](docs/how-it-works.md)** | Why it exists, the deploy sequence, Stalwart setup without its wizard, shared certificates, IP bans behind a proxy |
+| 🔒 **[Security model](docs/security-model.md)** | What is exposed, where secrets live, the trust decisions it makes |
+| 🧰 **[Troubleshooting](docs/troubleshooting.md)** | Problems by message or symptom, and known limits |
+| 🧪 **[Contributing](CONTRIBUTING.md)** | Building, the unit and end-to-end tests, the code layout, releases |
 
 ## What you get
 
@@ -68,17 +80,6 @@ ihasmail-oneshot deploy --domain example.com --email you@example.net --user alic
 It checks the host, shows the plan with the exact ihasmail release it will use,
 and asks before changing anything. Then publish `dns-records.zone`, and mail
 flows.
-
-## Documentation
-
-| | |
-| --- | --- |
-| 📘 **[Step-by-step guide](https://docs.ihasmail.org/install/oneshot/)** | On docs.ihasmail.org: DNS, ports, deploying, publishing records, signing in, upgrading and backups |
-| 📋 **[Reference](docs/reference.md)** | Requirements, every command and flag, the deployment directory, upgrading, backing up, removing |
-| ⚙️ **[How it works](docs/how-it-works.md)** | Why it exists, the deploy sequence, Stalwart setup without its wizard, shared certificates, IP bans behind a proxy |
-| 🔒 **[Security model](docs/security-model.md)** | What is exposed, where secrets live, the trust decisions it makes |
-| 🧰 **[Troubleshooting](docs/troubleshooting.md)** | Problems by message or symptom, and known limits |
-| 🧪 **[Contributing](CONTRIBUTING.md)** | Building, the unit and end-to-end tests, the code layout, releases |
 
 ## Versions
 
