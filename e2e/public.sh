@@ -173,7 +173,7 @@ ok "dns-records.zone has the MX and DKIM records"
 
 certs_out=$("$BIN" certs --dir "$DEPLOY" 2>&1 || true)
 grep -q "already holds a certificate for $MAIL" <<<"$certs_out" || die "certs did not see the existing certificate: $certs_out"
-ok "certs recognises the certificate already issued"
+ok "certs recognizes the certificate already issued"
 
 # --- the auto-ban -------------------------------------------------------------
 # Last, so nothing earlier can be affected by a ban. Scans come from throwaway

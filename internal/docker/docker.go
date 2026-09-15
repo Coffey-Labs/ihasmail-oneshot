@@ -48,7 +48,7 @@ func Versions(ctx context.Context) (engine, compose string, err error) {
 	return engine, compose, nil
 }
 
-// ProjectLeftovers lists containers, volumes and networks already labelled
+// ProjectLeftovers lists containers, volumes and networks already labeled
 // with a compose project name. Any at all means an earlier run of the same
 // project, and its volumes would hand a "fresh" deployment an old server.
 func ProjectLeftovers(ctx context.Context, project string) ([]string, error) {

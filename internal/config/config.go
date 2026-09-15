@@ -123,7 +123,7 @@ var (
 	imageRE    = regexp.MustCompile(`^[a-z0-9][a-z0-9._/-]*(?::[A-Za-z0-9._-]+)?(?:@sha256:[a-f0-9]{64})?$`)
 )
 
-func normaliseHost(s string) string {
+func normalizeHost(s string) string {
 	return strings.TrimSuffix(strings.ToLower(strings.TrimSpace(s)), ".")
 }
 
@@ -136,7 +136,7 @@ func (o Options) Validate() (Plan, error) {
 
 	p := Plan{Local: o.Local}
 
-	p.Domain = normaliseHost(o.Domain)
+	p.Domain = normalizeHost(o.Domain)
 	switch {
 	case p.Domain == "" && o.Local:
 		p.Domain = "example.test"
@@ -153,7 +153,7 @@ func (o Options) Validate() (Plan, error) {
 		p.Domain = "domain.invalid"
 	}
 
-	p.MailHost = normaliseHost(o.MailHost)
+	p.MailHost = normalizeHost(o.MailHost)
 	if p.MailHost == "" {
 		p.MailHost = "mail." + p.Domain
 	}
@@ -164,7 +164,7 @@ func (o Options) Validate() (Plan, error) {
 		fail("--mail-host %q must be one label under the domain, e.g. mail.%s", o.MailHost, p.Domain)
 	}
 
-	p.WebmailHost = normaliseHost(o.WebmailHost)
+	p.WebmailHost = normalizeHost(o.WebmailHost)
 	if p.WebmailHost == "" {
 		p.WebmailHost = "webmail." + p.Domain
 	}
