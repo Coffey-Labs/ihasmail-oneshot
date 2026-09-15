@@ -22,15 +22,46 @@ import (
 	"strings"
 )
 
-// Versions this release was tested with, end to end. Stalwart is pinned
-// because ihasmail validates against one Stalwart release at a time; the
-// ihasmail tag is the newest release at the time; Caddy is pinned so that a
-// redeploy months from now renders the same proxy.
+// Stalwart is pinned to the release this version of the tool was tested with,
+// because a Stalwart upgrade migrates its store with no way back and ihasmail
+// validates against one Stalwart release at a time. Caddy is pinned so that a
+// deploy months from now renders the same proxy.
+//
+// ihasmail is not pinned here. A pin went stale within days of each release,
+// and ihasmail's image cleanup keeps ten releases, so an old default would in
+// time stop pulling at all. The default is the newest release instead, looked
+// up when the tool runs and written into compose.yaml as its dated tag -- see
+// deploy.ResolveIhasmail -- so what a deployment runs is still recorded and
+// nothing moves it afterwards.
 const (
 	DefaultStalwartImage = "stalwartlabs/stalwart:v0.16.22"
-	DefaultIhasmailImage = "ghcr.io/coffey-labs/ihasmail:2026.9.10-pr328"
 	DefaultCaddyImage    = "caddy:2.11.4"
+
+	IhasmailRepository = "ghcr.io/coffey-labs/ihasmail"
+	// NewestIhasmail is the default --ihasmail-image. Only full releases move
+	// this tag; prereleases never do.
+	NewestIhasmail = IhasmailRepository + ":latest"
 )
+
+// ihasmail's versions are the date of a commit and where it came from --
+// 2026.9.13+pr344, or 2026.9.13+g1fa6578 for a commit that arrived without a
+// pull request -- and its image tags are the same with the "+" as "-", since a
+// Docker tag may not contain "+".
+var ihasmailVersionRE = regexp.MustCompile(`^\d{4}\.\d{1,2}\.\d{1,2}\+(?:pr\d+|g[0-9a-f]{7,40})$`)
+
+// IhasmailTag is the image tag an ihasmail version is published under. A
+// version that is not a release's -- empty, or the 0.0.0 of a build nobody
+// gave a version to -- has none.
+func IhasmailTag(version string) (string, bool) {
+	if !ihasmailVersionRE.MatchString(version) {
+		return "", false
+	}
+	return strings.Replace(version, "+", "-", 1), true
+}
+
+// FollowsNewestIhasmail reports whether the plan still asks for the newest
+// ihasmail release rather than a particular image.
+func (p Plan) FollowsNewestIhasmail() bool { return p.IhasmailImage == NewestIhasmail }
 
 // Stalwart's ACME order covers these next to the mail host, all under the mail
 // domain: it is what its own DNS zone points at the mail host as CNAMEs, and
@@ -225,7 +256,7 @@ func (o Options) Validate() (Plan, error) {
 	}
 
 	p.StalwartImage = orDefault(o.StalwartImage, DefaultStalwartImage)
-	p.IhasmailImage = orDefault(o.IhasmailImage, DefaultIhasmailImage)
+	p.IhasmailImage = orDefault(o.IhasmailImage, NewestIhasmail)
 	p.CaddyImage = orDefault(o.CaddyImage, DefaultCaddyImage)
 	for flag, img := range map[string]string{"--stalwart-image": p.StalwartImage, "--ihasmail-image": p.IhasmailImage, "--caddy-image": p.CaddyImage} {
 		if !imageRE.MatchString(img) {

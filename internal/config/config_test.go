@@ -98,3 +98,41 @@ func TestEveryProblemAtOnce(t *testing.T) {
 		t.Errorf("got %d errors, want 3: %v", len(lines), err)
 	}
 }
+
+func TestIhasmailFollowsTheNewestReleaseUnlessNamed(t *testing.T) {
+	p, err := Options{Domain: "example.com"}.Validate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !p.FollowsNewestIhasmail() || p.IhasmailImage != "ghcr.io/coffey-labs/ihasmail:latest" {
+		t.Errorf("default ihasmail image %q", p.IhasmailImage)
+	}
+	named, err := Options{Domain: "example.com", IhasmailImage: "ghcr.io/coffey-labs/ihasmail:2026.9.13-pr344"}.Validate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if named.FollowsNewestIhasmail() {
+		t.Error("a named image is treated as the newest release")
+	}
+	byDigest := "ghcr.io/coffey-labs/ihasmail@sha256:" + strings.Repeat("a", 64)
+	if _, err := (Options{Domain: "example.com", IhasmailImage: byDigest}).Validate(); err != nil {
+		t.Errorf("a by-digest image is refused: %v", err)
+	}
+}
+
+func TestIhasmailTag(t *testing.T) {
+	for version, want := range map[string]string{
+		"2026.9.13+pr344":    "2026.9.13-pr344",
+		"2026.10.2+g1fa6578": "2026.10.2-g1fa6578",
+		"0.0.0":              "",
+		"":                   "",
+		"2026.9.13":          "",
+		"2026.9.13+pr344\n":  "",
+		"latest":             "",
+	} {
+		got, ok := IhasmailTag(version)
+		if got != want || ok != (want != "") {
+			t.Errorf("IhasmailTag(%q) = %q, %v; want %q", version, got, ok, want)
+		}
+	}
+}

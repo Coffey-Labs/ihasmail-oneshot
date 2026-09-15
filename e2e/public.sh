@@ -96,6 +96,16 @@ ok "deploy completed and signed in through ihasmail"
 grep -q "certificate  issued by CN=Pebble" "$WORK/deploy.log" || die "deploy did not report Stalwart's certificate"
 ok "deploy reported Stalwart's certificate"
 
+# No --ihasmail-image, so the deploy took the newest release -- and must have
+# written it down as a dated tag, never the moving :latest.
+image=$(sed -n 's/^    image: \(ghcr.io\/coffey-labs\/ihasmail[:@].*\)$/\1/p' "$DEPLOY/compose.yaml")
+[[ "$image" =~ ^ghcr\.io/coffey-labs/ihasmail:[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}-(pr[0-9]+|g[0-9a-f]+)$ ]] \
+  || die "compose.yaml does not pin ihasmail to a dated release: ${image:-none}"
+ok "compose.yaml pins ihasmail to $image"
+running=$(docker compose --project-directory "$DEPLOY" ps -q ihasmail | xargs docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' | sed -n 's/^IHASMAIL_VERSION=//p')
+[ "${running/+/-}" = "${image##*:}" ] || die "ihasmail runs $running, but compose.yaml says ${image##*:}"
+ok "the running ihasmail is the release compose.yaml names ($running)"
+
 # expect CODE curl-args...: retry for up to 30s until curl gets CODE. Caddy
 # obtains certificates for its names in parallel and in the background, so the
 # first handshake for any one of them can come a few seconds after deploy.

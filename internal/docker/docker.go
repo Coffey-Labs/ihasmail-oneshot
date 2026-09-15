@@ -33,6 +33,54 @@ func Output(ctx context.Context, args ...string) (string, error) {
 	return strings.TrimSpace(stdout.String()), nil
 }
 
+// Pull pulls one image. Quiet, because it runs before the plan is confirmed
+// and the step already says what it is fetching.
+func Pull(ctx context.Context, image string) error {
+	_, err := Output(ctx, "pull", "--quiet", image)
+	return err
+}
+
+// ImageID is the local ID of an image, which is the same for two references
+// only when they are the same image.
+func ImageID(ctx context.Context, image string) (string, error) {
+	return Output(ctx, "image", "inspect", "--format", "{{.Id}}", image)
+}
+
+// ImageEnv is the value an image's configuration gives an environment
+// variable, or "" when it sets none.
+func ImageEnv(ctx context.Context, image, name string) (string, error) {
+	out, err := Output(ctx, "image", "inspect", "--format", "{{range .Config.Env}}{{println .}}{{end}}", image)
+	if err != nil {
+		return "", err
+	}
+	return envValue(out, name), nil
+}
+
+func envValue(env, name string) string {
+	for _, line := range strings.Split(env, "\n") {
+		if v, ok := strings.CutPrefix(line, name+"="); ok {
+			return v
+		}
+	}
+	return ""
+}
+
+// RepoDigest is an image's by-digest reference in one repository, e.g.
+// ghcr.io/coffey-labs/ihasmail@sha256:..., which names exactly that image for
+// as long as the registry keeps it.
+func RepoDigest(ctx context.Context, image, repository string) (string, error) {
+	out, err := Output(ctx, "image", "inspect", "--format", "{{range .RepoDigests}}{{println .}}{{end}}", image)
+	if err != nil {
+		return "", err
+	}
+	for _, d := range strings.Fields(out) {
+		if strings.HasPrefix(d, repository+"@") {
+			return d, nil
+		}
+	}
+	return "", fmt.Errorf("%s has no digest from %s", image, repository)
+}
+
 // Versions returns the engine and compose versions, which is also the check
 // that both are installed and this user may use them.
 func Versions(ctx context.Context) (engine, compose string, err error) {
