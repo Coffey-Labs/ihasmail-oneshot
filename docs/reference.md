@@ -39,8 +39,8 @@ unpack:
 
 ```bash
 ARCH=amd64   # or arm64
-curl -fsSLO https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest/download/ihasmail-oneshot-linux-$ARCH.tar.gz
-curl -fsSLO https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest/download/SHA256SUMS
+curl -fsSLO https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases/download/latest/ihasmail-oneshot-linux-$ARCH.tar.gz
+curl -fsSLO https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases/download/latest/SHA256SUMS
 sha256sum --ignore-missing -c SHA256SUMS
 tar -xzf ihasmail-oneshot-linux-$ARCH.tar.gz
 sudo install -m 0755 ihasmail-oneshot /usr/local/bin/
@@ -57,7 +57,7 @@ same bytes from the same commit.
 With Go 1.26.8 or newer:
 
 ```bash
-git clone https://github.com/Coffey-Labs/ihasmail-oneshot.git
+git clone https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot.git
 cd ihasmail-oneshot
 go build -o ihasmail-oneshot ./cmd/ihasmail-oneshot
 ```
@@ -168,7 +168,7 @@ docker compose pull && docker compose up -d
 
 - **ihasmail** is safe to move to any newer release that supports your
   Stalwart version. Its release notes say which. The newest is on
-  [ihasmail's releases](https://github.com/Coffey-Labs/ihasmail/releases); its
+  [ihasmail's releases](https://git.coffeylabs.org/coffey-labs/ihasmail/releases); its
   image tag is the version with `+` written as `-`, e.g. `2026.9.13-pr344`.
 - **Stalwart**: read its upgrade notes before changing versions. Check that the
   ihasmail version you run supports the new Stalwart release first, since

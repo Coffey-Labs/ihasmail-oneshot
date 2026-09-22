@@ -70,7 +70,7 @@ upgrade migrates its data with no way back, so its version only changes in a
 release of this tool.
 
 Binaries for `linux/amd64` and `linux/arm64` and a `SHA256SUMS` file are
-attached to every [release](https://github.com/Coffey-Labs/ihasmail-oneshot/releases).
+attached to every [release](https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases).
 
 Every release is built by the [release workflow](.github/workflows/release.yml)
 from a tagged commit on `main`, after the tests and a known-vulnerabilities

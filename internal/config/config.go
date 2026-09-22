@@ -37,7 +37,7 @@ const (
 	DefaultStalwartImage = "stalwartlabs/stalwart:v0.16.22"
 	DefaultCaddyImage    = "caddy:2.11.4"
 
-	IhasmailRepository = "ghcr.io/coffey-labs/ihasmail"
+	IhasmailRepository = "registry.coffeylabs.org/coffey-labs/ihasmail"
 	// NewestIhasmail is the default --ihasmail-image. Only full releases move
 	// this tag; prereleases never do.
 	NewestIhasmail = IhasmailRepository + ":latest"

@@ -50,7 +50,7 @@ It deploys three containers:
 | Container | Image | Role |
 | --- | --- | --- |
 | **Stalwart** | `stalwartlabs/stalwart` | The mail server: SMTP, IMAP, POP3, JMAP, CalDAV, CardDAV, spam filtering, DKIM. It holds all the mail and all the accounts |
-| **ihasmail** | `ghcr.io/coffey-labs/ihasmail` | The webmail: mail, calendars, contacts, files and filters in the browser, talking to Stalwart over JMAP. It holds nothing but sessions |
+| **ihasmail** | `registry.coffeylabs.org/coffey-labs/ihasmail` | The webmail: mail, calendars, contacts, files and filters in the browser, talking to Stalwart over JMAP. It holds nothing but sessions |
 | **Caddy** | `caddy` | The HTTPS front: certificates and TLS for the webmail and for Stalwart's web side |
 
 It has two shapes:

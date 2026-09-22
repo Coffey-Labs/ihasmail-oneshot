@@ -104,17 +104,17 @@ func TestIhasmailFollowsTheNewestReleaseUnlessNamed(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !p.FollowsNewestIhasmail() || p.IhasmailImage != "ghcr.io/coffey-labs/ihasmail:latest" {
+	if !p.FollowsNewestIhasmail() || p.IhasmailImage != "registry.coffeylabs.org/coffey-labs/ihasmail:latest" {
 		t.Errorf("default ihasmail image %q", p.IhasmailImage)
 	}
-	named, err := Options{Domain: "example.com", IhasmailImage: "ghcr.io/coffey-labs/ihasmail:2026.9.13-pr344"}.Validate()
+	named, err := Options{Domain: "example.com", IhasmailImage: "registry.coffeylabs.org/coffey-labs/ihasmail:2026.9.13-pr344"}.Validate()
 	if err != nil {
 		t.Fatal(err)
 	}
 	if named.FollowsNewestIhasmail() {
 		t.Error("a named image is treated as the newest release")
 	}
-	byDigest := "ghcr.io/coffey-labs/ihasmail@sha256:" + strings.Repeat("a", 64)
+	byDigest := "registry.coffeylabs.org/coffey-labs/ihasmail@sha256:" + strings.Repeat("a", 64)
 	if _, err := (Options{Domain: "example.com", IhasmailImage: byDigest}).Validate(); err != nil {
 		t.Errorf("a by-digest image is refused: %v", err)
 	}
