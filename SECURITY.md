@@ -39,5 +39,5 @@ Out of scope, and best reported upstream:
 
 - Vulnerabilities in Stalwart itself
 - Vulnerabilities in ihasmail itself — see
-  [its security policy](https://github.com/Coffey-Labs/ihasmail/security/policy)
+  [its security policy](https://git.coffeylabs.org/coffey-labs/ihasmail/src/branch/main/SECURITY.md)
 - Vulnerabilities in Caddy or Docker

@@ -66,7 +66,7 @@ func envValue(env, name string) string {
 }
 
 // RepoDigest is an image's by-digest reference in one repository, e.g.
-// ghcr.io/coffey-labs/ihasmail@sha256:..., which names exactly that image for
+// registry.coffeylabs.org/coffey-labs/ihasmail@sha256:..., which names exactly that image for
 // as long as the registry keeps it.
 func RepoDigest(ctx context.Context, image, repository string) (string, error) {
 	out, err := Output(ctx, "image", "inspect", "--format", "{{range .RepoDigests}}{{println .}}{{end}}", image)

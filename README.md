@@ -1,12 +1,12 @@
 # ihasmail-oneshot
 
-[![Latest release](https://img.shields.io/github/v/release/Coffey-Labs/ihasmail-oneshot?sort=date)](https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest)
+[![Latest release](https://img.shields.io/gitea/v/release/coffey-labs/ihasmail-oneshot?gitea_url=https%3A%2F%2Fgit.coffeylabs.org)](https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases/latest)
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
 [![Docs: docs.ihasmail.org](https://img.shields.io/badge/docs-docs.ihasmail.org-0ea5e9)](https://docs.ihasmail.org/install/oneshot/)
 
 **One command that turns a Linux Docker host into a working mail server with
 webmail.** It deploys a fresh [Stalwart](https://stalw.art) mail server and a
-fresh [ihasmail](https://github.com/Coffey-Labs/ihasmail) webmail, links them
+fresh [ihasmail](https://git.coffeylabs.org/coffey-labs/ihasmail) webmail, links them
 together, gets them certificates, and hands you the administrator password and
 the DNS records to publish.
 
@@ -50,8 +50,8 @@ The full list is in [docs/reference.md](docs/reference.md#requirements).
 
 ```bash
 ARCH=amd64   # or arm64
-curl -fsSLO https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest/download/ihasmail-oneshot-linux-$ARCH.tar.gz
-curl -fsSLO https://github.com/Coffey-Labs/ihasmail-oneshot/releases/latest/download/SHA256SUMS
+curl -fsSLO https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases/download/latest/ihasmail-oneshot-linux-$ARCH.tar.gz
+curl -fsSLO https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/releases/download/latest/SHA256SUMS
 sha256sum --ignore-missing -c SHA256SUMS
 tar -xzf ihasmail-oneshot-linux-$ARCH.tar.gz
 sudo install -m 0755 ihasmail-oneshot /usr/local/bin/
