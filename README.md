@@ -4,6 +4,10 @@
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
 [![Docs: docs.ihasmail.org](https://img.shields.io/badge/docs-docs.ihasmail.org-0ea5e9)](https://docs.ihasmail.org/install/oneshot/)
 
+> [!NOTE]
+> Development happens on [git.coffeylabs.org/coffey-labs/ihasmail-oneshot](https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot); the copy on GitHub is a read-only mirror.
+> Report issues at **[git.coffeylabs.org/coffey-labs/ihasmail-oneshot/issues](https://git.coffeylabs.org/coffey-labs/ihasmail-oneshot/issues)**, and join discussions at **[community.coffeylabs.org](https://community.coffeylabs.org)**.
+
 **One command that turns a Linux Docker host into a working mail server with
 webmail.** It deploys a fresh [Stalwart](https://stalw.art) mail server and a
 fresh [ihasmail](https://git.coffeylabs.org/coffey-labs/ihasmail) webmail, links them
