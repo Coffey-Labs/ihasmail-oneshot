@@ -15,7 +15,7 @@ state of its own between runs.
 
 **Please do not open a public GitHub issue for security vulnerabilities.**
 
-Report them privately by emailing **johnellisATlinuxDOTcom**, with:
+Report them privately by emailing **securityATcoffeylabsDOTorg**, with:
 
 - A description of the issue and its impact
 - Steps to reproduce
