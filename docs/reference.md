@@ -81,7 +81,7 @@ ihasmail-oneshot deploy --local [flags]
 | `--user NAME` | none | Create a mailbox `NAME@DOMAIN` with a generated password. Repeat for more |
 | `--dir` | `./PROJECT` | Deployment directory to write. Must be new or empty |
 | `--project` | `ihasmail-DOMAIN` (dots as dashes) | Compose project name, which prefixes containers, network and volumes |
-| `--stalwart-image` | `stalwartlabs/stalwart:v0.16.22` | Stalwart image |
+| `--stalwart-image` | `stalwartlabs/stalwart:v0.16.27` | Stalwart image |
 | `--ihasmail-image` | the newest release | ihasmail image. By default the tool looks up ihasmail's newest release and writes it into `compose.yaml` by its dated tag; name an image to use a particular one |
 | `--caddy-image` | `caddy:2.11.4` | Caddy image |
 | `--webmail-bind` | `127.0.0.1:8080` | Host address for ihasmail's own port, for reaching it without Caddy |

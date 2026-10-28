@@ -85,5 +85,6 @@ address, or the webmail name not resolving from the host.
 - **Push by subscription isn't covered by the end-to-end test**, whose lab has no
   public DNS for Stalwart to resolve the webmail's name through. Its fallback,
   the relay, is what the test exercises.
-- Validated against **Stalwart 0.16.22**. Other Stalwart versions may change the
-  registry objects the setup uses.
+- Deploys **Stalwart 0.16.27** by default. The setup steps were worked out on
+  0.16.22. Stalwart 1.0 isn't supported: its first-run setup changed. Other
+  versions may change the registry objects the setup uses.

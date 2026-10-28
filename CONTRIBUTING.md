@@ -81,8 +81,9 @@ generally means newer tested versions of those.
 
 ihasmail is the exception: a deploy takes its newest release, so a new
 ihasmail needs no new release of this tool. What keeps that safe is the
-end-to-end test, which runs every Monday against ihasmail's newest release, a
-few hours after ihasmail publishes it. Stalwart is never taken this way — an
+end-to-end test, run by hand against ihasmail's newest release after ihasmail
+publishes it (the `e2e` job in `.github/workflows/ci.yml`, on a GitHub runner,
+because it needs a throwaway VM). Stalwart is never taken this way — an
 upgrade migrates its data with no way back, so its version only changes in a
 release of this tool.
 
