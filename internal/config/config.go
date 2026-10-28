@@ -34,7 +34,7 @@ import (
 // deploy.ResolveIhasmail -- so what a deployment runs is still recorded and
 // nothing moves it afterwards.
 const (
-	DefaultStalwartImage = "stalwartlabs/stalwart:v0.16.22"
+	DefaultStalwartImage = "stalwartlabs/stalwart:v0.16.27"
 	DefaultCaddyImage    = "caddy:2.11.4"
 
 	IhasmailRepository = "registry.coffeylabs.org/coffey-labs/ihasmail"

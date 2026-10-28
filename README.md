@@ -92,8 +92,22 @@ flows.
 Releases are tagged by date (`v2026.9.15`). Each pins the Stalwart and Caddy
 versions it was tested with. ihasmail is the newest release at deploy time,
 written into `compose.yaml` by its dated tag, and checked by an end-to-end test
-every Monday. Nothing upgrades by itself afterwards. Details in
+run by hand after ihasmail's weekly release. Nothing upgrades by itself afterwards. Details in
 [CONTRIBUTING.md](CONTRIBUTING.md#versions-and-releases).
+
+## Support
+
+| Stalwart | Status |
+| --- | --- |
+| 0.16.27 | Supported, and the default |
+| Other 0.16 releases | Not tested. `--stalwart-image` takes them, at your own risk |
+| 1.0 | Not supported. Its first-run setup changed, and this tool sets up 0.16 only |
+
+The tool gets bug and security fixes. ihasmail itself supports Stalwart
+0.16.27 and 1.0, so a server this tool deploys can be moved to 1.0 later with
+Stalwart's own upgrade tool. If a Stalwart release would need more
+than a bug fix here, the default stays on the last version that works, and
+this table says so.
 
 ## Security
 
